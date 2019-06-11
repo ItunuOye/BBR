@@ -1,25 +1,21 @@
 function buildMetadata(sample) {
 
   // @TODO: Complete the following function that builds the metadata panel
-
+  var url = `/metadata/${sample}`
   // Use `d3.json` to fetch the metadata for a sample
+  d3.json(url).then(function(response) {
+      //console.log(response)
+      //console.log(Object.entries(response));
     // Use d3 to select the panel with id of `#sample-metadata`
-
+    var panelText = (Object.values(response))
+    var panelData = d3.select("#sample-metadata");
     // Use `.html("") to clear any existing metadata
-
+    panelData.html("");
     // Use `Object.entries` to add each key and value pair to the panel
     // Hint: Inside the loop, you will need to use d3 to append new
     // tags for each key-value in the metadata.
 
-/* data route */
-var url = "/metadata/"+ sample;
-d3.json(url).then(function(response) {
-  //console.log(response);
-  //console.log(Object.entries(response));
-  var panelText = (Object.values(response))
-  var panelData = d3.select("#sample-metadata");
   // remove any children from the list to
-  panelData.html("");
   // append stats to the list
   panelData.append("div").text(`Age:`+` `+ panelText[0]);
   panelData.append("div").text(`Belly Button Type:`+` `+ panelText[1]);
@@ -101,16 +97,16 @@ function buildCharts(sample) {
     mode: 'markers',
     marker: {
       size: allValues,
-    //   color: ['rgb(93, 164, 214)', 
-    //     'rgb(255, 144, 14)',  
-    //     'rgb(44, 160, 101)', 
-    //     'rgb(255, 65, 54)',
-    //     'rgb(80, 248, 236)',
-    //     'rgb(126, 229, 174)',
-    //     'rgb(222, 239, 74)',
-    //     'rgb(239, 2, 217)',
-    //     'rgb(79, 35, 37)',
-    //     'rgb(139, 5, 90)'],
+      color: ['rgb(93, 164, 214)', 
+        'rgb(255, 144, 14)',  
+        'rgb(44, 160, 101)', 
+        'rgb(255, 65, 54)',
+        'rgb(80, 248, 236)',
+        'rgb(126, 229, 174)',
+        'rgb(222, 239, 74)',
+        'rgb(239, 2, 217)',
+        'rgb(79, 35, 37)',
+        'rgb(139, 5, 90)'],
      }
   };
   
@@ -136,9 +132,11 @@ function buildCharts(sample) {
 function init() {
   // Grab a reference to the dropdown select element
   var selector = d3.select("#selDataset");
-
+  // console.log(selector)
+ 
   // Use the list of sample names to populate the select options
   d3.json("/names").then((sampleNames) => {
+    //console.log(sampleNames[0]);
     sampleNames.forEach((sample) => {
       selector
         .append("option")
