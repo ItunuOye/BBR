@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 from flask import Flask, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, folder_name="templates")
+app = Flask(__name__)
 
 
 #################################################
@@ -67,18 +67,13 @@ def sample_metadata(sample):
     # Create a dictionary entry for each row of metadata information
     sample_metadata = {}
     for result in results:
-        try:
-            sample_metadata["sample"] = result[0]
-            sample_metadata["ETHNICITY"] = result[1]
-            sample_metadata["GENDER"] = result[2]
-            sample_metadata["AGE"] = result[3]
-            sample_metadata["LOCATION"] = result[4]
-            sample_metadata["BBTYPE"] = result[5]
-            sample_metadata["WFREQ"] = result[6]
-
-            print("everything checks out")
-        except:
-            print("does not apply")
+        sample_metadata["sample"] = result[0]
+        sample_metadata["ETHNICITY"] = result[1]
+        sample_metadata["GENDER"] = result[2]
+        sample_metadata["AGE"] = result[3]
+        sample_metadata["LOCATION"] = result[4]
+        sample_metadata["BBTYPE"] = result[5]
+        sample_metadata["WFREQ"] = result[6]
 
     print(sample_metadata)
     return jsonify(sample_metadata)
@@ -94,14 +89,6 @@ def samples(sample):
     # only keep rows with values above 1
     sample_data = df.loc[df[sample] > 1, ["otu_id", "otu_label", sample]]
     # Format the data to send as json
-
-    # Create a dictionary entry for each row of metadata information
-    # samples = {}
-    for sample_data in sample_data:
-        samples["otu_id"] = sample_data
-        samples["otu_label"] = sample_data
-        samples["sample"] = sample_data
-    return jsonify(samples)
     data = {
         "otu_ids": sample_data.otu_id.values.tolist(),
         "sample_values": sample_data[sample].values.tolist(),
