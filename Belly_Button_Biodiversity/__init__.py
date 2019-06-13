@@ -1,4 +1,4 @@
-from app.app import db
+# from app.app import db
 
-# db.drop_all()
-db.create_all()
+# # db.drop_all()
+# db.create_all()
